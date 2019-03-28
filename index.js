@@ -61,4 +61,13 @@ app.post('/github/push', (request, response) => {
   }
 })
 
+process.once('SIGINT', () => {
+  frau.stop()
+    .then(() => process.exit(0))
+    .catch(err => {
+      console.log(`Failed to stop Frau due to ${err}`)
+      process.exit(1)
+    })
+})
+
 app.listen(8080, () => frau.start())
