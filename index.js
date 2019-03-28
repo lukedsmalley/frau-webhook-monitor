@@ -24,12 +24,12 @@ function Frau() {
       })
       handle.stdout.setEncoding('utf8')
       handle.stdout.on('data', data => {
-        console.log(data)
+        console.log(data.substring(0, data.length - 1))
         resolve()
       })
       handle.stderr.setEncoding('utf8')
       handle.stderr.on('data', data => {
-        console.log(data)
+        console.log(data.substring(0, data.length - 1))
         resolve()
       })
     })
