@@ -17,7 +17,10 @@ function Frau() {
     return new Promise((resolve, reject) => {
       handle = spawn('node', ['.'], {
         cwd: config.cwd,
-        stdio: 'inherit'
+        stdio: 'pipe'
+      })
+      handle.on('error', err => {
+        reject(err)
       })
       handle.stdout.on('data', data => {
         console.log(data)
@@ -26,9 +29,6 @@ function Frau() {
       handle.stderr.on('data', data => {
         console.log(data)
         resolve()
-      })
-      handle.on('error', err => {
-        reject(err)
       })
     })
   }
