@@ -1,0 +1,23 @@
+{
+  "name": "minami",
+  "version": "1.0.0",
+  "description": "Launcher daemon for Frau",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lukedsmalley/minami.git"
+  },
+  "author": "Luke Smalley",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lukedsmalley/minami/issues"
+  },
+  "homepage": "https://github.com/lukedsmalley/minami#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "json5": "^2.1.0"
+  }
+}
