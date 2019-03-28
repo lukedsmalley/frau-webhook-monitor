@@ -33,11 +33,17 @@ function Frau() {
     })
   }
 
-  this.start = async function() {
-    await launch()
-    handle.once('exit', (code, signal) => {
-      console.log(`Frau exited with code ${code}: ${signal}`)
-      await this.start()
+  this.start = function() {
+    launch()
+    .then(() => {
+      handle.once('exit', (code, signal) => {
+        console.log(`Frau exited with code ${code}: ${signal}`)
+        this.start()
+      })
+    })
+    .catch(err => {
+      console.log(`Failed to launch Frau due to ${err}`)
+      this.start()
     })
   }
 
