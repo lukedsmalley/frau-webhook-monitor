@@ -22,10 +22,12 @@ function Frau() {
       handle.on('error', err => {
         reject(err)
       })
+      handle.stdout.setEncoding('utf8')
       handle.stdout.on('data', data => {
         console.log(data)
         resolve()
       })
+      handle.stderr.setEncoding('utf8')
       handle.stderr.on('data', data => {
         console.log(data)
         resolve()
