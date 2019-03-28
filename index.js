@@ -1,4 +1,4 @@
-const { spawn } = require('child_process')
+const { spawn, execSync } = require('child_process')
 const express = require('express')
 const { readFileSync } = require('fs')
 const { parse } = require('json5')
@@ -46,7 +46,13 @@ app.post('/github/push', (request, response) => {
     response.sendStatus(403)
   } else {
     frau.stop()
-      .then(() => frau.start())
+      .then(() => {
+        execSync('git pull', {
+          cwd: config.cwd,
+          stdio: 'inherit'
+        })
+        frau.start()
+      })
       .catch(err => {
         response.sendStatus(500)
         console.log(`Frau failed to restart due to ${err}`)
