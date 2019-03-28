@@ -3,7 +3,7 @@ const express = require('express')
 const { readFileSync } = require('fs')
 const { parse } = require('json5')
 
-const config
+let config
 try {
   config = parse(readFileSync('./config.json'))
 } catch (err) {
