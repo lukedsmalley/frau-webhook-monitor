@@ -14,7 +14,7 @@ function Frau() {
   let handle
 
   this.start = function() {
-    handle = spawn('node', '.', {
+    handle = spawn('node', ['.'], {
       cwd: config.cwd,
       stdio: 'inherit'
     })
