@@ -13,17 +13,31 @@ try {
 function Frau() {
   let handle
 
-  this.start = function() {
-    handle = spawn('node', ['.'], {
-      cwd: config.cwd,
-      stdio: 'inherit'
+  function launch() {
+    return new Promise((resolve, reject) => {
+      handle = spawn('node', ['.'], {
+        cwd: config.cwd,
+        stdio: 'inherit'
+      })
+      handle.stdout.on('data', data => {
+        console.log(data)
+        resolve()
+      })
+      handle.stderr.on('data', data => {
+        console.log(data)
+        resolve()
+      })
+      handle.on('error', err => {
+        reject(err)
+      })
     })
-    handle.on('error', err => {
-      console.log(`Frau process error - ${err}`)
-    })
+  }
+
+  this.start = async function() {
+    await launch()
     handle.once('exit', (code, signal) => {
-      console.log(`Frau stopped with code ${code}: ${signal}`)
-      this.start()
+      console.log(`Frau exited with code ${code}: ${signal}`)
+      await this.start()
     })
   }
 
