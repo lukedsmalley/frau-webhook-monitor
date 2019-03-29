@@ -1,4 +1,5 @@
 const { spawn, execSync } = require('child_process')
+const { createHmac } = require('crypto')
 const express = require('express')
 const { readFileSync } = require('fs')
 const { parse } = require('json5')
@@ -63,10 +64,22 @@ function Frau() {
 const app = express()
 const frau = new Frau()
 
-app.post('/github/push', (request, response) => {
+app.post('/minami/github/push', (request, response) => {
   if (!request.header('X-Hub-Signature')) {
     response.sendStatus(403)
-  } else {
+    return
+  }
+  
+  let hmac = createHmac('sha1', config.secret)
+
+  request.once('readable', () => {
+    hmac.update(request.read())
+    
+    if (hmac.digest('hex') !== request.header('X-Hub-Signature')) {
+      response.sendStatus(403)
+      return
+    }
+
     frau.stop()
       .then(() => {
         execSync('git pull', {
@@ -80,7 +93,7 @@ app.post('/github/push', (request, response) => {
         console.log(`Frau failed to restart due to ${err}`)
         process.exit(1)
       })
-  }
+  })
 })
 
 process.once('SIGINT', () => {
