@@ -96,6 +96,12 @@ app.post('/minami/github/push', (request, response) => {
   })
 })
 
+app.use(function (err, request, response, next) {
+  console.log(`Failed to handle ${request.method} ${request.originalUrl} due to ${err}`)
+  console.log(err.stack)
+  response.sendStatus(500)
+})
+
 process.once('SIGINT', () => {
   frau.stop()
     .then(() => process.exit(0))
