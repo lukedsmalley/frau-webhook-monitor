@@ -86,13 +86,12 @@ app.post('/minami/github/push', (request, response) => {
           cwd: config.cwd,
           stdio: 'inherit'
         })
-        frau.start()
       })
       .catch(err => {
         response.sendStatus(500)
-        console.log(`Frau failed to restart due to ${err}`)
-        process.exit(1)
+        console.log(`Frau failed to update due to ${err}`)
       })
+      .then(() => frau.start())
   })
 })
 
