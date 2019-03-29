@@ -73,10 +73,9 @@ app.post('/minami/github/push', (request, response) => {
   let hmac = createHmac('sha1', config.secret)
 
   request.once('readable', () => {
-    let data = request.read() || 'sha1='
-    hmac.update(data.slice(5))
-    
-    if (hmac.digest('hex') !== request.header('X-Hub-Signature')) {
+    hmac.update(request.read() || '')
+
+    if (hmac.digest('hex') !== request.header('X-Hub-Signature').slice(5)) {
       response.sendStatus(403)
       return
     }
