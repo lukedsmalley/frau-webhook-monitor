@@ -91,7 +91,10 @@ app.post('/minami/github/push', (request, response) => {
         response.sendStatus(500)
         console.log(`Frau failed to update due to ${err}`)
       })
-      .then(() => frau.start())
+      .then(() => {
+        frau.start()
+        response.sendStatus(200)
+      })
   })
 })
 
